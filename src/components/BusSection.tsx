@@ -10,12 +10,12 @@ export default function BusSection() {
   const busCards: BusCard[] = [
     {
       id: 1,
-      image: "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?q=80&w=1000",
+      image: "https://pbs.twimg.com/media/CLGv6KjWcAAFK8V.jpg",
       title: "Paseo 1"
     },
     {
       id: 2,
-      image: "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?q=80&w=1000",
+      image: "https://pbs.twimg.com/media/GNNoPUHXAAAokdC.jpg:large",
       title: "Paseo 2"
     }
   ];
