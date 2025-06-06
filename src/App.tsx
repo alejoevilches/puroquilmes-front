@@ -13,28 +13,28 @@ import SearchResults from "./pages/SearchResults"
 const mockedItems = [
   {
     id: 1,
-    image: "https://images.unsplash.com/photo-1514933651103-005eec06c04b?q=80&w=1000",
-    title: "Bar Central"
+    image: "https://media-cdn.tripadvisor.com/media/photo-s/17/03/81/32/entrada.jpg",
+    title: "La Casa de Manu"
   },
   {
     id: 2,
-    image: "https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=1000",
-    title: "La Esquina"
+    image: "https://www.periodiconuevaepoca.com.ar/wp/wp-content/uploads/2023/09/1687448013455.jpg",
+    title: "Burger Taster"
   },
   {
     id: 3,
-    image: "https://images.unsplash.com/photo-1514933651103-005eec06c04b?q=80&w=1000",
-    title: "El Rincón"
+    image: "https://buenosairesushi.com/assets/img/salon4.jpg",
+    title: "Buenos Aires Sushi"
   },
   {
     id: 4,
-    image: "https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=1000",
-    title: "Pub Local"
+    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSebiB9I_X15WzvnIkfiy6_SWER_-JhMk7lPQ&s",
+    title: "Blend Pub"
   },
   {
     id: 5,
-    image: "https://images.unsplash.com/photo-1514933651103-005eec06c04b?q=80&w=1000",
-    title: "Cervecería"
+    image: "https://www.cerveceriaymalteriaquilmes.com/wp-content/uploads/2018/11/Jardin_de_la_Cerveceria_Quilmes_3.jpg",
+    title: "Parque de la Cerveceria"
   }
 ];
 
