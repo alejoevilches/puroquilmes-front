@@ -13,28 +13,28 @@ import SearchResults from "./pages/SearchResults"
 const mockedItems = [
   {
     id: 1,
-    image: "https://www.cerveceriaymalteriaquilmes.com/wp-content/uploads/2018/11/Jardin_de_la_Cerveceria_Quilmes_3.jpg",
-    title: "Parque de la Cerveceria"
+    image: "https://images.unsplash.com/photo-1514933651103-005eec06c04b?q=80&w=1000",
+    title: "Bar Central"
   },
   {
     id: 2,
-    image: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0c/d2/d9/e9/ta-img-20160903-221542.jpg?w=900&h=500&s=1",
-    title: "La Casa de Manu"
+    image: "https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=1000",
+    title: "La Esquina"
   },
   {
     id: 3,
-    image: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/21/67/e9/9e/deck.jpg?w=500&h=-1&s=1",
-    title: "Los Blancos"
+    image: "https://images.unsplash.com/photo-1514933651103-005eec06c04b?q=80&w=1000",
+    title: "El Rincón"
   },
   {
     id: 4,
-    image: "https://buenosairesushi.com/assets/img/salon4.jpg",
-    title: "Buenos Aires Sushi"
+    image: "https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=1000",
+    title: "Pub Local"
   },
   {
     id: 5,
-    image: "https://www.periodiconuevaepoca.com.ar/wp/wp-content/uploads/2023/09/1687448013455.jpg",
-    title: "Burger Taster"
+    image: "https://images.unsplash.com/photo-1514933651103-005eec06c04b?q=80&w=1000",
+    title: "Cervecería"
   }
 ];
 
@@ -46,7 +46,6 @@ function Home() {
       <CarouselSection 
         title="Lugares Destacados" 
         items={mockedItems}
-        onItemClick={() => window.location.href = '/local-info'}
       />
       <BusSection />
     </>
