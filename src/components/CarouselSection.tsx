@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import Glide from '@glidejs/glide';
 import '@glidejs/glide/dist/css/glide.core.min.css';
 import '@glidejs/glide/dist/css/glide.theme.min.css';
+import { Link } from 'react-router-dom';
 
 interface CarouselItem {
   id: number;
@@ -37,13 +38,13 @@ export default function CarouselSection({ title, items }: CarouselSectionProps) 
 
   return (
     <section className="py-12 px-[50px]">
-      <h2 className="text-3xl font-bold mb-8 text-black text-center">{title}</h2>
+      <h2 className="text-3xl font-bold mb-8 text-black !text-4xl text-center">{title}</h2>
       <div className="glide" ref={glideRef}>
         <div className="glide__track" data-glide-el="track">
           <ul className="glide__slides">
             {items.map((item) => (
               <li key={item.id} className="glide__slide relative">
-                <a href="/local-info" className="block">
+                <Link to="/local-info" className="block">
                   <div className="relative aspect-video">
                     <img
                       src={item.image}
@@ -54,7 +55,7 @@ export default function CarouselSection({ title, items }: CarouselSectionProps) 
                       {item.title}
                     </div>
                   </div>
-                </a>
+                </Link>
               </li>
             ))}
           </ul>
