@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom"
+
 interface BusCard {
   id: number;
   image: string;
@@ -20,15 +22,15 @@ export default function BusSection() {
 
   return (
     <section className="py-12 px-4 md:px-[50px] bg-[#FFF8E7]">
-      <h2 className="text-3xl font-bold mb-8 text-black text-center">
+      <h2 className="text-3xl font-bold mb-8 text-black !text-4xl text-center">
         Elegí tu destino turístico
       </h2>
       <div className="flex flex-col md:flex-row justify-center gap-8">
         {busCards.map((card) => (
-          <div 
+          <Link 
             key={card.id} 
+            to="/bus-reservation"
             className="w-full md:w-[400px] bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow cursor-pointer"
-            onClick={() => window.location.href = '/bus-reservation'}
           >
             <div className="aspect-video">
               <img
@@ -40,7 +42,7 @@ export default function BusSection() {
             <div className="p-4 text-center">
               <h3 className="text-xl font-semibold text-gray-800">{card.title}</h3>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
     </section>
