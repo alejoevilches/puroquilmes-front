@@ -1,1 +1,15 @@
 @import "tailwindcss";
+
+@theme {
+    --color-puroquilmes-50: #f8f7fd;
+    --color-puroquilmes-100: #f1eefb;
+    --color-puroquilmes-200: #e4def7;
+    --color-puroquilmes-300: #d6cdf3;
+    --color-puroquilmes-400: #c9bdef;
+    --color-puroquilmes-500: #bcaeec;
+    --color-puroquilmes-600: #856adc;
+    --color-puroquilmes-700: #522fc6;
+    --color-puroquilmes-800: #371f84;
+    --color-puroquilmes-900: #1b1042;
+    --color-puroquilmes-950: #0e0821;
+  }
