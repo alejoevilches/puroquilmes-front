@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Proxy - Puro Quilmes</title>
+</head>
+<body>
+    <h1>Test del Proxy de Vite</h1>
+    
+    <h2>Test 1: GET /api/test/ping</h2>
+    <button onclick="testPing()">Probar Ping</button>
+    <div id="ping-result"></div>
+    
+    <h2>Test 2: POST /api/auth/login</h2>
+    <button onclick="testLogin()">Probar Login</button>
+    <div id="login-result"></div>
+    
+    <h2>Test 3: Verificar Proxy</h2>
+    <button onclick="checkProxy()">Verificar Proxy</button>
+    <div id="proxy-result"></div>
+
+    <script>
+        async function testPing() {
+            try {
+                const response = await fetch('/api/test/ping');
+                const result = await response.text();
+                document.getElementById('ping-result').innerHTML = `<strong>Resultado:</strong> ${result}`;
+            } catch (error) {
+                document.getElementById('ping-result').innerHTML = `<strong>Error:</strong> ${error.message}`;
+            }
+        }
+
+        async function testLogin() {
+            try {
+                const response = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        email: 'test@test.com',
+                        password: 'test123'
+                    })
+                });
+                const result = await response.text();
+                document.getElementById('login-result').innerHTML = `<strong>Status:</strong> ${response.status} - <strong>Resultado:</strong> ${result}`;
+            } catch (error) {
+                document.getElementById('login-result').innerHTML = `<strong>Error:</strong> ${error.message}`;
+            }
+        }
+
+        async function checkProxy() {
+            try {
+                // Intentar hacer una petición que debería ir al proxy
+                const response = await fetch('/api/test/cors');
+                const result = await response.text();
+                document.getElementById('proxy-result').innerHTML = `<strong>Proxy funcionando:</strong> ${result}`;
+            } catch (error) {
+                document.getElementById('proxy-result').innerHTML = `<strong>Proxy fallando:</strong> ${error.message}`;
+            }
+        }
+    </script>
+</body>
+</html>

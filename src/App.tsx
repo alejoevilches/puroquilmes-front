@@ -9,6 +9,8 @@ import Register from "./pages/Register"
 import LocalInfo from "./pages/LocalInfo"
 import BusReservation from "./pages/BusReservation"
 import SearchResults from "./pages/SearchResults"
+import UserProfile from "./pages/UserProfile"
+import { AuthProvider } from "./contexts/AuthContext"
 
 const mockedItems = [
   {
@@ -54,15 +56,18 @@ function Home() {
 
 export default function App(){
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/local-info" element={<LocalInfo />} />
-        <Route path="/bus-reservation" element={<BusReservation />} />
-        <Route path="/search-results" element={<SearchResults />} />
-      </Routes>
-    </Router>
+    <AuthProvider>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/local-info" element={<LocalInfo />} />
+          <Route path="/bus-reservation" element={<BusReservation />} />
+          <Route path="/search-results" element={<SearchResults />} />
+          <Route path="/profile" element={<UserProfile />} />
+        </Routes>
+      </Router>
+    </AuthProvider>
   )
 }
