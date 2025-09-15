@@ -18,9 +18,13 @@ export default function Navbar(){
     navigate('/login');
   };
 
+  const navClass = typeof window !== 'undefined' && window.location.pathname === '/bus-reservation'
+    ? "flex flex-row justify-between items-center w-full py-6 px-4 md:px-10 absolute top-0 z-10 bg-black"
+    : "flex flex-row justify-between items-center w-full py-6 px-4 md:px-10 absolute top-0 z-10 bg-black/30 backdrop-blur-xs";
+
   if (isLoading) {
     return (
-      <nav className="flex flex-row justify-between items-center w-full py-6 px-4 md:px-10 absolute top-0 z-10 bg-black/30 backdrop-blur-xs">
+      <nav className={navClass}>
         <p className="text-white">Puro Quilmes</p>
         <div className="text-white">Cargando...</div>
       </nav>
@@ -28,7 +32,7 @@ export default function Navbar(){
   }
 
   return(
-    <nav className="flex flex-row justify-between items-center w-full py-6 px-4 md:px-10 absolute top-0 z-10 bg-black/30 backdrop-blur-xs">
+    <nav className={navClass}>
       <p className="text-white">Puro Quilmes</p>
       
       <button 

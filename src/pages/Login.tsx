@@ -76,6 +76,14 @@ export default function Login() {
           {loading ? 'Iniciando Sesión...' : 'Iniciar Sesión'}
         </button>
       </form>
+        {/* Botón para crear cuenta */}
+        <button
+          type="button"
+          onClick={() => navigate('/register')}
+          className="mt-4 w-96 py-2 px-4 rounded-md bg-puroquilmes-500 hover:bg-puroquilmes-600 text-white font-medium shadow-md"
+        >
+          Crear cuenta
+        </button>
     </section>
   );
 } 
