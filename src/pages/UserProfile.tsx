@@ -1,3 +1,4 @@
+import type { Lugar } from '../types/Lugar';
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
@@ -25,6 +26,9 @@ interface UserData {
 }
 
 export default function UserProfile() {
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [lugares, setLugares] = useState<Lugar[]>([]);
+  const [selectedLugarId, setSelectedLugarId] = useState<number | null>(null);
   const { user } = useAuth();
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -36,6 +40,18 @@ export default function UserProfile() {
   const [placeTypes, setPlaceTypes] = useState<PlaceType[]>([]);
 
   useEffect(() => {
+    const fetchLugares = async () => {
+      try {
+        const response = await fetch('http://localhost:8080/api/lugares');
+        if (!response.ok) throw new Error('Error al obtener lugares');
+        const data: Lugar[] = await response.json();
+        console.log(data);
+        setLugares(data);
+      } catch (error) {
+        console.error('Error al obtener lugares:', error);
+      }
+    };
+    fetchLugares();
     if (!user) {
       navigate('/login');
       return;
@@ -222,8 +238,69 @@ export default function UserProfile() {
                   <button onClick={() => setIsModalOpen(true)} className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-medium">
                     Agregar Lugar
                   </button>
+                  <button onClick={() => setIsDeleteModalOpen(true)} className="px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium">
+                    Eliminar Lugar
+                  </button>
                 </div>
               </div>
+      {/* Modal Eliminar Lugar */}
+      {isDeleteModalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+            <h2 className="text-xl font-bold mb-4">Eliminar Lugar</h2>
+            <form
+              onSubmit={async (e) => {
+                e.preventDefault();
+                if (!selectedLugarId) {
+                  alert('Selecciona un lugar');
+                  return;
+                }
+                console.log("[DELETE PLACE] Lugar ID seleccionado:", selectedLugarId);
+                try {
+                  const response = await fetch(`http://localhost:8080/api/lugares/${selectedLugarId}`, {
+                    method: 'DELETE',
+                  });
+                  if (response.ok) {
+                    alert('Lugar eliminado correctamente');
+                    setLugares(lugares.filter(l => l.id !== selectedLugarId));
+                    setIsDeleteModalOpen(false);
+                  } else {
+                    alert('Error al eliminar el lugar');
+                  }
+                } catch (error) {
+                  alert('Error en la conexión con el servidor');
+                }
+              }}
+            >
+              <div className="mb-4">
+                <label className="block text-gray-700">Selecciona un lugar</label>
+                <select
+                  className="w-full border rounded p-2"
+                  value={selectedLugarId !== null && !isNaN(selectedLugarId) ? String(selectedLugarId) : ''}
+                  onChange={e => {
+                    const value = e.target.value;
+                    setSelectedLugarId(value === '' ? null : Number(value));
+                  }}
+                  required
+                >
+                  <option value="">-- Selecciona --</option>
+                  {lugares.map(lugar => (
+                    <option key={lugar.id} value={lugar.id}>{lugar.nombre}</option>
+                  ))}
+                </select>
+              </div>
+              <div className="flex justify-end">
+                <button type="button" onClick={() => setIsDeleteModalOpen(false)} className="px-4 py-2 bg-gray-300 rounded mr-2">
+                  Cancelar
+                </button>
+                <button type="submit" className="px-4 py-2 bg-red-600 text-white rounded">
+                  Eliminar
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
             </div>
           </div>
         </div>
