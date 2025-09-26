@@ -37,7 +37,7 @@ export default function UserProfile() {
       return;
     }
 
-    // Fetch zones and place types
+    // Fetch zones
     const fetchZones = async () => {
       try {
         const response = await fetch('http://localhost:8080/api/zonas');
@@ -51,21 +51,13 @@ export default function UserProfile() {
       }
     };
 
-    const fetchPlaceTypes = async () => {
-      try {
-        const response = await fetch('http://localhost:8080/api/tipo_lugar');
-        if (!response.ok) {
-          throw new Error('Error fetching place types');
-        }
-        const data: PlaceType[] = await response.json();
-        setPlaceTypes(data);
-      } catch (error) {
-        console.error('Failed to fetch place types:', error);
-      }
-    };
-
     fetchZones();
-    fetchPlaceTypes();
+
+    // Hardcoded place types
+    setPlaceTypes([
+      { id: 1, nombre: 'Bar' },
+      { id: 2, nombre: 'Pizzeria' },
+    ]);
   }, [user, navigate]);
 
   const handleAddPlace = async (event: React.FormEvent<HTMLFormElement>) => {
