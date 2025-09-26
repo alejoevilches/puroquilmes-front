@@ -2,6 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
+interface Zone {
+  id: number;
+  nombre: string;
+}
+
+interface PlaceType {
+  id: number;
+  nombre: string;
+}
+
 interface UserData {
   nombre: string;
   apellido: string;
@@ -17,31 +27,96 @@ interface UserData {
 export default function UserProfile() {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [zones, setZones] = useState<Zone[]>([]);
+  const [placeTypes, setPlaceTypes] = useState<PlaceType[]>([]);
 
   useEffect(() => {
     if (!user) {
       navigate('/login');
       return;
     }
+
+    // Fetch zones and place types
+    const fetchZones = async () => {
+      try {
+        const response = await fetch('http://localhost:8080/api/zonas');
+        if (!response.ok) {
+          throw new Error('Error fetching zones');
+        }
+        const data: Zone[] = await response.json();
+        setZones(data);
+      } catch (error) {
+        console.error('Failed to fetch zones:', error);
+      }
+    };
+
+    const fetchPlaceTypes = async () => {
+      try {
+        const response = await fetch('http://localhost:8080/api/tipo_lugar');
+        if (!response.ok) {
+          throw new Error('Error fetching place types');
+        }
+        const data: PlaceType[] = await response.json();
+        setPlaceTypes(data);
+      } catch (error) {
+        console.error('Failed to fetch place types:', error);
+      }
+    };
+
+    fetchZones();
+    fetchPlaceTypes();
   }, [user, navigate]);
+
+  const handleAddPlace = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+
+    const data = {
+      nombre: formData.get('nombre') as string,
+      ubicacion: formData.get('ubicacion') as string,
+      descripcion: formData.get('descripcion') as string,
+      zonaId: parseInt(formData.get('zonaId') as string, 10),
+      tipoLugarId: parseInt(formData.get('tipoLugarId') as string, 10),
+    };
+
+    const response = await fetch('http://localhost:8080/api/lugares', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (response.ok) {
+      alert('Lugar agregado correctamente');
+      setIsModalOpen(false);
+    } else {
+      alert('Error al agregar el lugar');
+    }
+  };
 
   if (!user) {
     return null; // Se redirige automáticamente
   }
 
-  // Convertir los datos del contexto a la interfaz UserData
-  const userData: UserData = {
-    nombre: user.nombre,
-    apellido: user.apellido,
-    email: user.email,
-    dni: user.dni || 0,
-    telefono: user.telefono || 0,
-    estado: user.estado || 1,
-    rol: {
-      nombre: user.rol
-    }
-  };
+  console.log("[PROFILE] user desde contexto:", user);
+const rolNombre =
+  typeof user?.rol === 'string'
+    ? user.rol
+    : (user.rol as { nombre: string })?.nombre ?? "Usuario";
 
+const userData: UserData = {
+  nombre: user.nombre,
+  apellido: user.apellido,
+  email: user.email,
+  dni: user.dni || 0,
+  telefono: user.telefono || 0,
+  estado: user.estado || 1,
+  rol: {
+    nombre: rolNombre
+  }
+};
   const getEstadoText = (estado: number) => {
     return estado === 1 ? 'Activo' : 'Inactivo';
   };
@@ -172,12 +247,71 @@ export default function UserProfile() {
                   >
                     Reservar Viaje
                   </button>
+                  <button
+                    onClick={() => setIsModalOpen(true)}
+                    className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-medium"
+                  >
+                    Agregar Lugar
+                  </button>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
+
+      {isModalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+            <h2 className="text-xl font-bold mb-4">Agregar Lugar</h2>
+            <form onSubmit={handleAddPlace}>
+              <div className="mb-4">
+                <label className="block text-gray-700">Nombre</label>
+                <input name="nombre" className="w-full border rounded p-2" required />
+              </div>
+              <div className="mb-4">
+                <label className="block text-gray-700">Ubicación</label>
+                <input name="ubicacion" className="w-full border rounded p-2" required />
+              </div>
+              <div className="mb-4">
+                <label className="block text-gray-700">Descripción</label>
+                <textarea name="descripcion" className="w-full border rounded p-2" required />
+              </div>
+              <div className="mb-4">
+                <label className="block text-gray-700">Zona</label>
+                <select name="zonaId" className="w-full border rounded p-2" required>
+                  {zones.map((zone) => (
+                    <option key={zone.id} value={zone.id}>{zone.nombre}</option>
+                  ))}
+                </select>
+              </div>
+              <div className="mb-4">
+                <label className="block text-gray-700">Tipo de Lugar</label>
+                <select name="tipoLugarId" className="w-full border rounded p-2" required>
+                  {placeTypes.map((type) => (
+                    <option key={type.id} value={type.id}>{type.nombre}</option>
+                  ))}
+                </select>
+              </div>
+              <div className="flex justify-end">
+                <button
+                  type="button"
+                  onClick={() => setIsModalOpen(false)}
+                  className="px-4 py-2 bg-gray-300 rounded mr-2"
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="submit"
+                  className="px-4 py-2 bg-blue-600 text-white rounded"
+                >
+                  Guardar
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
